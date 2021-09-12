@@ -6,6 +6,9 @@ TagManager:
   tags:
   - GridSquare
   - GreenSquare
+  - AllyUnit
+  - RedSquare
+  - EnemyUnit
   layers:
   - Default
   - TransparentFX
