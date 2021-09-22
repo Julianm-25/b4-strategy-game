@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Tile : MonoBehaviour
+public class TileTeddy : MonoBehaviour
 {
     /// <summary>
     /// position of box in the game grid
