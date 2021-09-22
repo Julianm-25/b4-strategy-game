@@ -4,7 +4,7 @@ using UnityEngine;
 namespace StrategyGame.Scripts
 {
     /// <summary>
-    /// Melee Character
+    /// Support Character
     /// </summary>
     public class Support : Character
     {
@@ -18,10 +18,12 @@ namespace StrategyGame.Scripts
         /// </summary>
         public void Initialise()
         {
-            hp = 3;
-            ap = 1;
-            maxActionDistance = 1;
-            maxMoveDistance = 3;
+            currentHealth = 3;
+            actionPoints = 1;
+            attackRange = 1;
+            attack = 1;
+            maxMovepoints = 3;
+            currentMovepoints = maxMovepoints;
         }
 
         public override void DoAttackActionXZ(Character target)

@@ -18,10 +18,12 @@ namespace StrategyGame.Scripts
         /// </summary>
         public void Initialise()
         {
-            hp = 8;
-            ap = 1;
-            maxActionDistance = 1;
-            maxMoveDistance = 1;
+            currentHealth = 8;
+            actionPoints = 1;
+            attackRange = 1;
+            attack = 1;
+            maxMovepoints = 1;
+            currentMovepoints = maxMovepoints;
         }
 
         public override void DoAttackActionXZ(Character target)

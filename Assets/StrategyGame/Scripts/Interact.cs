@@ -19,8 +19,8 @@ public class Interact : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If the left mouse button is clicked
-        if (Input.GetMouseButtonDown(0))
+        // If the left mouse button is clicked and no menu is displayed
+        if (Input.GetMouseButtonDown(0) && !UIManager.Instance.isMenu())
         {
             // This raycast goes towards the mouse
             Ray clickCheck;
@@ -32,6 +32,7 @@ public class Interact : MonoBehaviour
             if (Physics.Raycast(clickCheck, out hitInfo))
             {
                 Debug.Log(hitInfo.collider.tag);
+                // If clicked on Character Unit
                 if (hitInfo.collider.CompareTag("AllyUnit"))
                 {
                     // If the raycast hits an ally unit, set selectedUnit to the target
@@ -44,8 +45,8 @@ public class Interact : MonoBehaviour
                 {
                     // Set unitMovement to the Movement script attached to selectedUnit
                     Movement unitMovement = selectedUnit.GetComponent<Movement>();
-                    // Set unitStats to the UnitStats script attached to selectedUnit
-                    UnitStats unitStats = selectedUnit.GetComponent<UnitStats>();
+                    // Set unitStats to the Character script attached to selectedUnit
+                    Character unitStats = selectedUnit.GetComponent<Character>();
                     
                     // If the grid square's green tile is active
                     if (hitInfo.collider.GetComponent<Tile>().greenTile.activeInHierarchy && unitStats.currentMovepoints > 0)
@@ -88,24 +89,22 @@ public class Interact : MonoBehaviour
                     }
                 }
                 // If the raycast hits an enemy and you have more than 0 AP
-                else if (hitInfo.collider.CompareTag("EnemyUnit") && selectedUnit != null && selectedUnit.GetComponent<UnitStats>().actionPoints > 0)
+                else if (hitInfo.collider.CompareTag("EnemyUnit") && selectedUnit != null && selectedUnit.GetComponent<Character>().actionPoints > 0)
                 {
                     // If the raycast hits an enemy within the selected unit's attack range
-                    if(Vector3.Distance(hitInfo.collider.transform.position, selectedUnit.transform.position) <= selectedUnit.GetComponent<UnitStats>().attackRange)
+                    if(Vector3.Distance(hitInfo.collider.transform.position, selectedUnit.transform.position) <= selectedUnit.GetComponent<Character>().attackRange)
                     {
-                        Debug.Log("DING");
-                        Debug.Log("BING"); 
                         // Set enemy as the occupant of the selected tile
                         GameObject enemy = hitInfo.collider.gameObject; 
                         // Reduce the enemy's health by the current unit's attack
-                        enemy.GetComponent<UnitStats>().currentHealth -= selectedUnit.GetComponent<UnitStats>().attack; 
+                        enemy.GetComponent<Character>().currentHealth -= selectedUnit.GetComponent<Character>().attack; 
                         // If the enemy's health is 0 or lower
-                        if (enemy.GetComponent<UnitStats>().currentHealth <= 0) 
+                        if (enemy.GetComponent<Character>().currentHealth <= 0) 
                         { 
                             // Destroy the enemy
                             enemy.GetComponent<Movement>().Death(); 
                         } 
-                        selectedUnit.GetComponent<UnitStats>().actionPoints -= 1;
+                        selectedUnit.GetComponent<Character>().actionPoints -= 1;
                         UpdateText();
                     }
                 }
@@ -118,7 +117,7 @@ public class Interact : MonoBehaviour
     {
         // If the last AP is used up
         // Get rid of the red tiles
-        if (selectedUnit.GetComponent<UnitStats>().actionPoints == 1)
+        if (selectedUnit.GetComponent<Character>().actionPoints == 1)
         {
             // Clear the tiles
             selectedUnit.GetComponent<Movement>().ClearTiles();
@@ -126,18 +125,18 @@ public class Interact : MonoBehaviour
             selectedUnit.GetComponent<Movement>().ActivateAdjacentTiles();
         }
         // If the unit has AP
-        if (selectedUnit.GetComponent<UnitStats>().actionPoints > 0)
+        if (selectedUnit.GetComponent<Character>().actionPoints > 0)
         {
             // Take away 1 AP and add some movepoints
-            selectedUnit.GetComponent<UnitStats>().actionPoints -= 1;
-            selectedUnit.GetComponent<UnitStats>().currentMovepoints += selectedUnit.GetComponent<UnitStats>().maxMovepoints;
+            selectedUnit.GetComponent<Character>().actionPoints -= 1;
+            selectedUnit.GetComponent<Character>().currentMovepoints += selectedUnit.GetComponent<Character>().maxMovepoints;
             UpdateText();
         }
     }
 
     public void UpdateText()
     {
-        actionPointText.text = "AP Remaining: " + selectedUnit.GetComponent<UnitStats>().actionPoints;
-        movementPointText.text = "Movement Points Remaining: " + selectedUnit.GetComponent<UnitStats>().currentMovepoints;
+        actionPointText.text = "AP Remaining: " + selectedUnit.GetComponent<Character>().actionPoints;
+        movementPointText.text = "Movement Points Remaining: " + selectedUnit.GetComponent<Character>().currentMovepoints;
     }
 }

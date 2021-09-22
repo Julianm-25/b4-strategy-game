@@ -9,30 +9,39 @@ using UnityEngine;
 /// </summary>
 public abstract class Character : MonoBehaviour
 {
+    public int maxHealth;
     /// <summary>
     /// character health point
     /// </summary>
-    public int hp { get; protected set; }
+    public int currentHealth;
     /// <summary>
     /// character action point
     /// </summary>
-    public int ap { get; protected set; }
+    public int actionPoints;
     /// <summary>
     /// how far can a player move
     /// </summary>
-    public int maxMoveDistance { get; protected set; }
+    public int maxMovepoints;
+    /// <summary>
+    /// how many movements a player has
+    /// </summary>
+    public int currentMovepoints;
     /// <summary>
     /// how far away can the character execute an action to others
     /// </summary>
-    public int maxActionDistance { get; protected set; }
+    public int attackRange;
+    /// <summary>
+    /// how strong is the character's attack
+    /// </summary>
+    public int attack;
     /// <summary>
     /// name of this character class
     /// </summary>
-    public string name { get; protected set; }
+    public string className;
     /// <summary>
     /// which team does this character belong to, to check enemy/friend
     /// </summary>
-    public int teamID { get; protected set; }
+    public int teamID;
     /// <summary>
     /// increase ap of this character by a number
     /// </summary>
@@ -40,7 +49,7 @@ public abstract class Character : MonoBehaviour
     /// <returns></returns>
     public int IncreaseAP(int by = 1)
     {
-        return ap += by;
+        return actionPoints += by;
     }
 
     /// <summary>
@@ -61,7 +70,7 @@ public abstract class Character : MonoBehaviour
     /// <returns></returns>
     public int IncreaseHP(int by = 1)
     {
-        return hp += by;
+        return currentHealth += by;
     }
 
     /// <summary>

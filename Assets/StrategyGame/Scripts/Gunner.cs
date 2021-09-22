@@ -4,7 +4,7 @@ using UnityEngine;
 namespace StrategyGame.Scripts
 {
     /// <summary>
-    /// Melee Character
+    /// Gunner Character
     /// </summary>
     public class Gunner : Character
     {
@@ -18,10 +18,12 @@ namespace StrategyGame.Scripts
         /// </summary>
         public void Initialise()
         {
-            hp = 5;
-            ap = 1;
-            maxActionDistance = 2;
-            maxMoveDistance = 2;
+            currentHealth = 5;
+            actionPoints = 1;
+            attackRange = 2;
+            attack = 1;
+            maxMovepoints = 2;
+            currentMovepoints = maxMovepoints;
         }
 
         public override void DoAttackActionXZ(Character target)

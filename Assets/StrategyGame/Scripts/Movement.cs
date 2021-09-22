@@ -39,7 +39,7 @@ public class Movement : MonoBehaviour
     public void ActivateEnemyTiles()
     {
         // For each tile in attack range
-        foreach (var tile in Physics.OverlapSphere(transform.position, transform.GetComponent<UnitStats>().attackRange - 0.4f)) // the 0.4f is to avoid issues with diagonals
+        foreach (var tile in Physics.OverlapSphere(transform.position, transform.GetComponent<Character>().attackRange - 0.4f)) // the 0.4f is to avoid issues with diagonals
         {
             if (tile.CompareTag("GridSquare"))
             {
@@ -89,7 +89,7 @@ public class Movement : MonoBehaviour
     {
         // When the unit is clicked, if the tile is occupied, the occupant is an ally, and the occupant has move points, activate the tiles
         ClearTiles();
-        if (currentTile.GetComponent<Tile>().isOccupied && gameObject.CompareTag("AllyUnit") && gameObject.GetComponent<UnitStats>().currentMovepoints > 0)
+        if (currentTile.GetComponent<Tile>().isOccupied && gameObject.CompareTag("AllyUnit") && gameObject.GetComponent<Character>().currentMovepoints > 0)
         {
             ActivateAdjacentTiles();
             ActivateEnemyTiles();
