@@ -91,7 +91,7 @@ public class Interact : MonoBehaviour
                 else if (hitInfo.collider.CompareTag("EnemyUnit") && selectedUnit != null && selectedUnit.GetComponent<UnitStats>().actionPoints > 0)
                 {
                     // If the raycast hits an enemy within the selected unit's attack range
-                    if (hitInfo.collider.GetComponent<Movement>().currentTile.GetComponent<Tile>().redTile)
+                    if(Vector3.Distance(hitInfo.collider.transform.position, selectedUnit.transform.position) <= selectedUnit.GetComponent<UnitStats>().attackRange)
                     {
                         Debug.Log("DING");
                         Debug.Log("BING"); 
@@ -116,6 +116,15 @@ public class Interact : MonoBehaviour
     // Connected to a UI button
     public void IncreaseMovePoints()
     {
+        // If the last AP is used up
+        // Get rid of the red tiles
+        if (selectedUnit.GetComponent<UnitStats>().actionPoints == 1)
+        {
+            // Clear the tiles
+            selectedUnit.GetComponent<Movement>().ClearTiles();
+            // Activate the adjacent green tiles
+            selectedUnit.GetComponent<Movement>().ActivateAdjacentTiles();
+        }
         // If the unit has AP
         if (selectedUnit.GetComponent<UnitStats>().actionPoints > 0)
         {
