@@ -39,7 +39,7 @@ public class Movement : MonoBehaviour
     public void ActivateEnemyTiles()
     {
         // For each tile in attack range
-        foreach (var tile in Physics.OverlapSphere(transform.position, transform.GetComponent<UnitStats>().attackRange))
+        foreach (var tile in Physics.OverlapSphere(transform.position, transform.GetComponent<UnitStats>().attackRange - 0.4f)) // the 0.4f is to avoid issues with diagonals
         {
             if (tile.CompareTag("GridSquare"))
             {
@@ -52,7 +52,6 @@ public class Movement : MonoBehaviour
             }
         }
     }
-
     public void ClearTiles()
     {
         // Gets every green tile on the field
