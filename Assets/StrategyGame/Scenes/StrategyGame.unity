@@ -14590,7 +14590,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh296482
+  m_Name: pb_Mesh18734
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -27008,6 +27008,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1009998417 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5916261251556180861, guid: 99b478dc5b03bd94f986b0378a47781d, type: 3}
+  m_PrefabInstance: {fileID: 5916261251428555692}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1021031662
 Mesh:
   m_ObjectHideFlags: 0
@@ -34341,7 +34346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adjTiles: []
-  currentTile: {fileID: 1523684639}
+  currentTile: {fileID: 1009998417}
 --- !u!65 &1392887054
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45379,6 +45384,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1837288405 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5916261251675644146, guid: 99b478dc5b03bd94f986b0378a47781d, type: 3}
+  m_PrefabInstance: {fileID: 5916261251428555692}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1839971591
 Mesh:
   m_ObjectHideFlags: 0
@@ -51594,7 +51604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adjTiles: []
-  currentTile: {fileID: 1523684639}
+  currentTile: {fileID: 1837288405}
 --- !u!114 &2089466751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54730,7 +54740,7 @@ PrefabInstance:
     - target: {fileID: 5916261252390129289, guid: 99b478dc5b03bd94f986b0378a47781d, type: 3}
       propertyPath: occupant
       value: 
-      objectReference: {fileID: 2089466744}
+      objectReference: {fileID: 1468002263}
     - target: {fileID: 5916261252390129292, guid: 99b478dc5b03bd94f986b0378a47781d, type: 3}
       propertyPath: m_Mesh
       value: 
