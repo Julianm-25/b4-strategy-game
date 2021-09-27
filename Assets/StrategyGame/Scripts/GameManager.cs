@@ -11,14 +11,42 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoSingleton<GameManager>
 {
     [SerializeField] private Camera mainCamera;
-    private Vector3 currentMousePos;
+    public Vector3 currentMousePos;
+
+    //team id starts from 0
+    private int activeTeamId;
+    //list of list of charachers, usage: teams[activeTeam][character]
+    private List<List<Character>> teams;
+    
+    /// <summary>
+    /// get the total AP for this turn for the a team
+    /// </summary>
+    /// <returns></returns>
+    public int getApThisTurn(int teamID)
+    {
+        int moves = 0;
+        foreach (var unit in teams[teamID])
+        {
+            moves += unit.actionPoints;
+        }
+
+        return moves;
+    }
+    /// <summary>
+    /// get the total AP for this turn for the activeteam
+    /// </summary>
+    /// <returns></returns>
+    public int getApThisTurn()
+    {
+        return getApThisTurn(activeTeamId);
+    }
 
     /// <summary>
     /// restart level and game
     /// </summary>
     public void startNewGame()
     {
-
+        activeTeamId = 0;
     }
 
     // Start is called before the first frame update

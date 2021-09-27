@@ -14,8 +14,6 @@ public class UIManager : MonoSingleton<UIManager>
     public GameObject gameOverMenu;
     public GameObject mainMenu;
     public bool isTimer;
-    [SerializeField] private AudioManager _audioManager;
-    [SerializeField] private GameManager _gameManager;
     
     public void Start()
     {
@@ -73,8 +71,8 @@ public class UIManager : MonoSingleton<UIManager>
         isTimer = !show;
         if (show)
         {
-            _audioManager.playGameOver(true);
-            _audioManager.playMusic(false);
+            AudioManager.Instance.playGameOver(true);
+            AudioManager.Instance.playMusic(false);
         }
     }
 
@@ -95,9 +93,36 @@ public class UIManager : MonoSingleton<UIManager>
         return gameOverMenu.activeSelf || mainMenu.activeSelf;
     }
 
+    /// <summary>
+    /// quit ui button quit is clicked
+    /// </summary>
     public void btnQuit()
     {
         Debug.Log("Application Quitting...");
         Application.Quit();
+    }
+
+    /// <summary>
+    /// attack ui button is clicked
+    /// </summary>
+    public void btnAttack()
+    {
+        Debug.Log("btnAttack...");
+    }
+    
+    /// <summary>
+    /// move ui button is clicked
+    /// </summary>
+    public void btnMove()
+    {
+        Debug.Log("btnMove...");
+    }
+
+    /// <summary>
+    /// end turn ui button is clicked
+    /// </summary>
+    public void btnEndTurn()
+    {
+        Debug.Log("btnEndTurn...");
     }
 }
