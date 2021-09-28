@@ -39,82 +39,100 @@ public class Interact : MonoBehaviour
                 // If clicked on Ally Character Unit
                 if (hitInfo.collider.CompareTag("Player") && GameManager.Instance.isAlly(hitInfo.collider.gameObject))
                 {
-                    // If the raycast hits an ally unit, set selectedUnit to the target
-                    selectedUnit = hitInfo.collider.gameObject;
-                    UICanvas.SetActive(true);
-                    UpdateText();
+                    selectUnit(hitInfo);
                 }
                 // If the raycast hits a grid square and selectedUnit has been set
                 else if (hitInfo.collider.CompareTag("GridSquare") && selectedUnit != null)
                 {
-                    // Set unitMovement to the Movement script attached to selectedUnit
-                    Movement unitMovement = selectedUnit.GetComponent<Movement>();
-                    // Set unitStats to the Character script attached to selectedUnit
-                    Character unitStats = selectedUnit.GetComponent<Character>();
-                    
-                    // If the grid square's green tile is active
-                    if (hitInfo.collider.GetComponent<Tile>().greenTile.activeInHierarchy && unitStats.currentMovepoints > 0)
-                    {
-                        // Un-occupy the current tile
-                        unitMovement.currentTile.GetComponent<Tile>().isOccupied = false;
-                        unitMovement.currentTile.GetComponent<Tile>().occupant = null;
-                        // Move the selectedUnit to the new tile and set it as occupied
-                        selectedUnit.transform.position = new Vector3(hitInfo.transform.position.x, hitInfo.transform.position.y + 0.3f, hitInfo.transform.position.z);
-                        hitInfo.collider.GetComponent<Tile>().isOccupied = true;
-                        hitInfo.collider.GetComponent<Tile>().occupant = selectedUnit;
-                        unitMovement.currentTile = hitInfo.collider.gameObject;
-                        // Reset the process of showing the adjacent tiles
-                        unitMovement.ClearTiles();
-                        unitMovement.GetAdjacentTiles();
-                        // Stops the green tiles from activating if you go from 1 to 0 movement points
-                        if (unitStats.currentMovepoints > 1)
-                        {
-                            unitMovement.ActivateAdjacentTiles();
-                        }
-
-                        if (unitStats.actionPoints > 0)
-                        {
-                            unitMovement.ActivateEnemyTiles();
-                        }
-                        
-                        // Reduces movement points by 1
-                        unitStats.currentMovepoints -= 1;
-                        // Updates the UI Text
-                        UpdateText();
-
-                    }
-                    // If an inactive tile is selected
-                    else
-                    {
-                        // Reset everything
-                        unitMovement.ClearTiles();
-                        selectedUnit = null;
-                        UICanvas.SetActive(false);
-                    }
+                    moveUnit(hitInfo);
                 }
                 // If the raycast hits an Enemy and you have more than 0 AP
                 else if (hitInfo.collider.CompareTag("Player") && selectedUnit != null && selectedUnit.GetComponent<Character>().actionPoints > 0 && !GameManager.Instance.isAlly(hitInfo.collider.gameObject))
                 {
-                    // If the raycast hits an enemy within the selected unit's attack range
-                    if(Vector3.Distance(hitInfo.collider.transform.position, selectedUnit.transform.position) <= selectedUnit.GetComponent<Character>().attackRange)
-                    {
-                        // Set enemy as the occupant of the selected tile
-                        GameObject enemy = hitInfo.collider.gameObject; 
-                        // Reduce the enemy's health by the current unit's attack
-                        enemy.GetComponent<Character>().currentHealth -= selectedUnit.GetComponent<Character>().attack; 
-                        // If the enemy's health is 0 or lower
-                        if (enemy.GetComponent<Character>().currentHealth <= 0) 
-                        { 
-                            // Destroy the enemy
-                            enemy.GetComponent<Movement>().Death(); 
-                        } 
-                        selectedUnit.GetComponent<Character>().actionPoints -= 1;
-                        UpdateText();
-                    }
+                    attackUnit(hitInfo);
                 }
             }
         }
     }
+
+    private void attackUnit(RaycastHit hitInfo)
+    {
+        // If the raycast hits an enemy within the selected unit's attack range
+        if (Vector3.Distance(hitInfo.collider.transform.position, selectedUnit.transform.position) <=
+            selectedUnit.GetComponent<Character>().attackRange)
+        {
+            // Set enemy as the occupant of the selected tile
+            GameObject enemy = hitInfo.collider.gameObject;
+            // Reduce the enemy's health by the current unit's attack
+            enemy.GetComponent<Character>().currentHealth -= selectedUnit.GetComponent<Character>().attack;
+            // If the enemy's health is 0 or lower
+            if (enemy.GetComponent<Character>().currentHealth <= 0)
+            {
+                // Destroy the enemy
+                enemy.GetComponent<Movement>().Death();
+            }
+
+            selectedUnit.GetComponent<Character>().actionPoints -= 1;
+            UpdateText();
+        }
+    }
+
+    private void moveUnit(RaycastHit hitInfo)
+    {
+        // Set unitMovement to the Movement script attached to selectedUnit
+        Movement unitMovement = selectedUnit.GetComponent<Movement>();
+        // Set unitStats to the Character script attached to selectedUnit
+        Character unitStats = selectedUnit.GetComponent<Character>();
+
+        // If the grid square's green tile is active
+        if (hitInfo.collider.GetComponent<Tile>().greenTile.activeInHierarchy && unitStats.currentMovepoints > 0)
+        {
+            // Un-occupy the current tile
+            unitMovement.currentTile.GetComponent<Tile>().isOccupied = false;
+            unitMovement.currentTile.GetComponent<Tile>().occupant = null;
+            // Move the selectedUnit to the new tile and set it as occupied
+            selectedUnit.transform.position = new Vector3(hitInfo.transform.position.x, hitInfo.transform.position.y + 0.3f,
+                hitInfo.transform.position.z);
+            hitInfo.collider.GetComponent<Tile>().isOccupied = true;
+            hitInfo.collider.GetComponent<Tile>().occupant = selectedUnit;
+            unitMovement.currentTile = hitInfo.collider.gameObject;
+            // Reset the process of showing the adjacent tiles
+            unitMovement.ClearTiles();
+            unitMovement.GetAdjacentTiles();
+            // Stops the green tiles from activating if you go from 1 to 0 movement points
+            if (unitStats.currentMovepoints > 1)
+            {
+                unitMovement.ActivateAdjacentTiles();
+            }
+
+            if (unitStats.actionPoints > 0)
+            {
+                unitMovement.ActivateEnemyTiles();
+            }
+
+            // Reduces movement points by 1
+            unitStats.currentMovepoints -= 1;
+            // Updates the UI Text
+            UpdateText();
+        }
+        // If an inactive tile is selected
+        else
+        {
+            // Reset everything
+            unitMovement.ClearTiles();
+            selectedUnit = null;
+            UICanvas.SetActive(false);
+        }
+    }
+
+    private void selectUnit(RaycastHit hitInfo)
+    {
+        // If the raycast hits an ally unit, set selectedUnit to the target
+        selectedUnit = hitInfo.collider.gameObject;
+        UICanvas.SetActive(true);
+        UpdateText();
+    }
+
     // Allows the player to spend more AP to move
     // Connected to a UI button
     public void IncreaseMovePoints()
