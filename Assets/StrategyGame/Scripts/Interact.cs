@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,8 +8,11 @@ using UnityEngine.UI;
 public class Interact : MonoBehaviour
 {
     private GameObject selectedUnit;
-    public Text actionPointText;
-    public Text movementPointText;
+    public TMP_Text teamText;
+    public TMP_Text unitText;
+    public TMP_Text hpText;
+    public TMP_Text actionPointText;
+    public TMP_Text movementPointText;
     public GameObject UICanvas;
     // Start is called before the first frame update
     void Start()
@@ -136,7 +140,10 @@ public class Interact : MonoBehaviour
 
     public void UpdateText()
     {
-        actionPointText.text = "AP Remaining: " + selectedUnit.GetComponent<Character>().actionPoints;
-        movementPointText.text = "Movement Points Remaining: " + selectedUnit.GetComponent<Character>().currentMovepoints;
+        teamText.text = selectedUnit.GetComponent<Character>().teamID.ToString();
+        unitText.text = selectedUnit.GetComponent<Character>().GetType().Name;
+        hpText.text = selectedUnit.GetComponent<Character>().currentHealth.ToString();
+        actionPointText.text = selectedUnit.GetComponent<Character>().actionPoints.ToString();
+        movementPointText.text = selectedUnit.GetComponent<Character>().currentMovepoints.ToString();
     }
 }
