@@ -11,8 +11,12 @@ public class UIManager : MonoSingleton<UIManager>
     public float timer = 60;
     public TMP_Text textScore;
     public TMP_Text textTimer;
+    public TMP_Text textAction;
+    public TMP_Text textInstruction;
     public GameObject gameOverMenu;
     public GameObject mainMenu;
+    public GameObject actionButtons;
+    public GameObject commandMenu;
     public bool isTimer;
     
     public void Start()
@@ -105,10 +109,21 @@ public class UIManager : MonoSingleton<UIManager>
     /// <summary>
     /// attack ui button is clicked
     /// </summary>
+    public void btnSelect()
+    {
+        Debug.Log("btnSelect...");
+        GameManager.Instance.nextAction = GameManager.NextAction.Select;
+        textAction.text = "Select";
+    }
+    
+    /// <summary>
+    /// attack ui button is clicked
+    /// </summary>
     public void btnAttack()
     {
         Debug.Log("btnAttack...");
-        GameManager.Instance.nextAction = "Attack";
+        GameManager.Instance.nextAction = GameManager.NextAction.Attack;
+        textAction.text = "Attack";
     }
     
     /// <summary>
@@ -117,7 +132,8 @@ public class UIManager : MonoSingleton<UIManager>
     public void btnMove()
     {
         Debug.Log("btnMove...");
-        GameManager.Instance.nextAction = "Move";
+        GameManager.Instance.nextAction = GameManager.NextAction.Move;
+        textAction.text = "Move";
     }
 
     /// <summary>
@@ -127,5 +143,31 @@ public class UIManager : MonoSingleton<UIManager>
     {
         Debug.Log("btnEndTurn...");
         GameManager.Instance.endTurn();
+        textAction.text = "Select";
+    }
+
+    /// <summary>
+    /// enables or disables the action buttons in menu
+    /// </summary>
+    /// <param name="yes">true or false</param>
+    public void enableButtons(bool yes)
+    {
+        actionButtons.SetActive(yes);
+        if (!yes)
+        {
+            textAction.text = "Select";
+            GameManager.Instance.nextAction = GameManager.NextAction.Select;
+        }
+        
+    }
+
+    public void setTurnText(int teamID)
+    {
+        textInstruction.text = $"Player {teamID}'s Turn";
+    }
+
+    public void toggleCommandMenu(bool yes)
+    {
+        commandMenu.SetActive(yes);
     }
 }

@@ -14,10 +14,10 @@ public class Interact : MonoBehaviour
     public TMP_Text actionPointText;
     public TMP_Text movementPointText;
     public GameObject UICanvas;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -33,24 +33,45 @@ public class Interact : MonoBehaviour
 
             RaycastHit hitInfo;
 
-            if (Physics.Raycast(clickCheck, out hitInfo))
+            // rider sugestion: invert 'if' to reduce nesting
+            if (!Physics.Raycast(clickCheck, out hitInfo)) return;
+
+            Debug.Log(hitInfo.collider.tag);
+            // If clicked on any Character Unit
+            if ((GameManager.Instance.nextAction == GameManager.NextAction.Select
+                 || selectedUnit == null)
+                && hitInfo.collider.CompareTag("Player")
+                //&& GameManager.Instance.isAlly(hitInfo.collider.gameObject)
+            )
             {
-                Debug.Log(hitInfo.collider.tag);
-                // If clicked on Ally Character Unit
-                if (hitInfo.collider.CompareTag("Player") && GameManager.Instance.isAlly(hitInfo.collider.gameObject))
-                {
-                    selectUnit(hitInfo);
-                }
-                // If the raycast hits a grid square and selectedUnit has been set
-                else if (hitInfo.collider.CompareTag("GridSquare") && selectedUnit != null)
-                {
-                    moveUnit(hitInfo);
-                }
-                // If the raycast hits an Enemy and you have more than 0 AP
-                else if (hitInfo.collider.CompareTag("Player") && selectedUnit != null && selectedUnit.GetComponent<Character>().actionPoints > 0 && !GameManager.Instance.isAlly(hitInfo.collider.gameObject))
-                {
-                    attackUnit(hitInfo);
-                }
+                //select unit and display info
+                selectUnit(hitInfo);
+            }
+            // If the raycast hits a grid square and selectedUnit has been set
+            else if (GameManager.Instance.nextAction == GameManager.NextAction.Move
+                     && selectedUnit != null
+                     && hitInfo.collider.CompareTag("GridSquare")
+            )
+            {
+                moveUnit(hitInfo);
+            }
+            // If the raycast hits an Enemy and you have more than 0 AP
+            else if (GameManager.Instance.nextAction == GameManager.NextAction.Attack
+                     && selectedUnit != null
+                     && selectedUnit.GetComponent<Character>().actionPoints > 0
+                     && !GameManager.Instance.isAlly(hitInfo.collider.gameObject))
+            {
+                attackUnit(hitInfo);
+            }
+            //if command menu is off and clicking on a player, show treat it as a selecting a unit
+            else if (!UICanvas.activeSelf
+                     && hitInfo.collider.CompareTag("Player"))
+            {
+                selectUnit(hitInfo);
+            }
+            else {
+                Debug.Log(
+                    $"object {hitInfo.collider.gameObject}, nextAction {GameManager.Instance.nextAction}, selectedUnit {selectedUnit}");
             }
         }
     }
@@ -91,7 +112,8 @@ public class Interact : MonoBehaviour
             unitMovement.currentTile.GetComponent<Tile>().isOccupied = false;
             unitMovement.currentTile.GetComponent<Tile>().occupant = null;
             // Move the selectedUnit to the new tile and set it as occupied
-            selectedUnit.transform.position = new Vector3(hitInfo.transform.position.x, hitInfo.transform.position.y + 0.3f,
+            selectedUnit.transform.position = new Vector3(hitInfo.transform.position.x,
+                hitInfo.transform.position.y + 0.3f,
                 hitInfo.transform.position.z);
             hitInfo.collider.GetComponent<Tile>().isOccupied = true;
             hitInfo.collider.GetComponent<Tile>().occupant = selectedUnit;
@@ -146,23 +168,35 @@ public class Interact : MonoBehaviour
             // Activate the adjacent green tiles
             selectedUnit.GetComponent<Movement>().ActivateAdjacentTiles();
         }
+
         // If the unit has AP
         if (selectedUnit.GetComponent<Character>().actionPoints > 0)
         {
             // Take away 1 AP and add some movepoints
             selectedUnit.GetComponent<Character>().actionPoints -= 1;
-            selectedUnit.GetComponent<Character>().currentMovepoints += selectedUnit.GetComponent<Character>().maxMovepoints;
+            selectedUnit.GetComponent<Character>().currentMovepoints +=
+                selectedUnit.GetComponent<Character>().maxMovepoints;
             UpdateText();
         }
     }
 
+    /// <summary>
+    /// called at the end of every player action
+    /// </summary>
     public void UpdateText()
     {
         //plus 1 because teamid starts with 0 internally, but 1 is more user friendly
-        teamText.text = (1 + selectedUnit.GetComponent<Character>().teamID).ToString();
+        var teamID = selectedUnit.GetComponent<Character>().teamID;
+        teamText.text = (1 + teamID).ToString();
         unitText.text = selectedUnit.GetComponent<Character>().GetType().Name;
         hpText.text = selectedUnit.GetComponent<Character>().currentHealth.ToString();
         actionPointText.text = selectedUnit.GetComponent<Character>().actionPoints.ToString();
         movementPointText.text = selectedUnit.GetComponent<Character>().currentMovepoints.ToString();
+
+        //disable the button if not current player's turn
+        UIManager.Instance.enableButtons(teamID == GameManager.Instance.activeTeamId);
+        
+        //check if player has no moves left and must end turn
+        GameManager.Instance.checkEndTurn();
     }
 }

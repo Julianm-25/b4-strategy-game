@@ -93,10 +93,11 @@ public class Movement : MonoBehaviour
         // When the unit is clicked, if the tile is occupied, the occupant is an ally, and the occupant has move points, activate the tiles
         ClearTiles();
         var tile = currentTile.GetComponent<Tile>();
-        if (tile.isOccupied && 
-            gameObject.CompareTag("Player") && 
-            GameManager.Instance.isAlly(tile.occupant) &&
-            gameObject.GetComponent<Character>().currentMovepoints > 0)
+        if (GameManager.Instance.nextAction == GameManager.NextAction.Select
+            && tile.isOccupied
+            && gameObject.CompareTag("Player")
+            && GameManager.Instance.isAlly(tile.occupant)
+            && gameObject.GetComponent<Character>().currentMovepoints > 0)
         {
             ActivateAdjacentTiles();
             ActivateEnemyTiles();
