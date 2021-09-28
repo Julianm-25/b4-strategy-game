@@ -7165,7 +7165,7 @@ GameObject:
   - component: {fileID: 235560795}
   m_Layer: 0
   m_Name: Gunner
-  m_TagString: EnemyUnit
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36199,7 +36199,7 @@ GameObject:
   - component: {fileID: 1392887052}
   m_Layer: 0
   m_Name: Enforcer
-  m_TagString: AllyUnit
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36238,7 +36238,7 @@ MonoBehaviour:
   attackRange: 0
   attack: 0
   className: 
-  teamID: 1
+  teamID: 0
 --- !u!114 &1392887053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37449,7 +37449,7 @@ GameObject:
   - component: {fileID: 1468002265}
   m_Layer: 0
   m_Name: Support
-  m_TagString: AllyUnit
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37488,7 +37488,7 @@ MonoBehaviour:
   attackRange: 0
   attack: 0
   className: 
-  teamID: 1
+  teamID: 0
 --- !u!114 &1468002266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47984,6 +47984,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 403500733}
   currentMousePos: {x: 0, y: 0, z: 0}
+  activeTeamId: 0
 --- !u!4 &1832210037
 Transform:
   m_ObjectHideFlags: 0
@@ -54255,7 +54256,7 @@ GameObject:
   - component: {fileID: 2089466751}
   m_Layer: 0
   m_Name: Gunner
-  m_TagString: AllyUnit
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54370,7 +54371,7 @@ MonoBehaviour:
   attackRange: 2
   attack: 1
   className: 
-  teamID: 1
+  teamID: 0
 --- !u!43 &2091008450
 Mesh:
   m_ObjectHideFlags: 0

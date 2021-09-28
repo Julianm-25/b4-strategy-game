@@ -39,19 +39,22 @@ public class Movement : MonoBehaviour
     public void ActivateEnemyTiles()
     {
         // For each tile in attack range
-        foreach (var tile in Physics.OverlapSphere(transform.position, transform.GetComponent<Character>().attackRange - 0.4f)) // the 0.4f is to avoid issues with diagonals
+        foreach (var tileCollider in Physics.OverlapSphere(transform.position, transform.GetComponent<Character>().attackRange - 0.4f)) // the 0.4f is to avoid issues with diagonals
         {
-            if (tile.CompareTag("GridSquare"))
+            if (tileCollider.CompareTag("GridSquare"))
             {
                 // If the tile is occupied by an enemy
-                if (tile.GetComponent<Tile>().isOccupied && tile.GetComponent<Tile>().occupant.CompareTag("EnemyUnit"))
+                var tile = tileCollider.GetComponent<Tile>();
+                if (tile.isOccupied && !GameManager.Instance.isAlly(tile.occupant))
                 {
                     // Activate the associated red tile
-                    tile.GetComponent<Tile>().redTile.SetActive(true);
+                    tileCollider.GetComponent<Tile>().redTile.SetActive(true);
                 }  
             }
         }
     }
+
+
 
     public void ClearTiles()
     {
@@ -89,7 +92,11 @@ public class Movement : MonoBehaviour
     {
         // When the unit is clicked, if the tile is occupied, the occupant is an ally, and the occupant has move points, activate the tiles
         ClearTiles();
-        if (currentTile.GetComponent<Tile>().isOccupied && gameObject.CompareTag("AllyUnit") && gameObject.GetComponent<Character>().currentMovepoints > 0)
+        var tile = currentTile.GetComponent<Tile>();
+        if (tile.isOccupied && 
+            gameObject.CompareTag("Player") && 
+            GameManager.Instance.isAlly(tile.occupant) &&
+            gameObject.GetComponent<Character>().currentMovepoints > 0)
         {
             ActivateAdjacentTiles();
             ActivateEnemyTiles();

@@ -14,7 +14,7 @@ public class GameManager : MonoSingleton<GameManager>
     public Vector3 currentMousePos;
 
     //team id starts from 0
-    private int activeTeamId;
+    public int activeTeamId;
     //list of list of charachers, usage: teams[activeTeam][character]
     private List<List<Character>> teams;
     
@@ -57,6 +57,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void initGame()
     {
+        Debug.Log("init game called();");
         throw new NotImplementedException();
     }
 
@@ -105,5 +106,17 @@ public class GameManager : MonoSingleton<GameManager>
         {
             Debug.Log($"mouse up at {Input.mousePosition}");
         }
+    }
+    
+    /// <summary>
+    /// Is this occupant of the tile Ally or not?
+    /// Not Ally means Enemy
+    /// </summary>
+    /// <param name="tileOccupant"></param>
+    /// <returns>true for ally, false for enemy</returns>
+    public bool isAlly(GameObject tileOccupant)
+    {
+        Debug.Log($"isAlly({tileOccupant.name}), occupant {tileOccupant.GetComponent<Character>().teamID}, active {activeTeamId}");
+        return tileOccupant.GetComponent<Character>().teamID == GameManager.Instance.activeTeamId;
     }
 }

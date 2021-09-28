@@ -36,8 +36,8 @@ public class Interact : MonoBehaviour
             if (Physics.Raycast(clickCheck, out hitInfo))
             {
                 Debug.Log(hitInfo.collider.tag);
-                // If clicked on Character Unit
-                if (hitInfo.collider.CompareTag("AllyUnit"))
+                // If clicked on Ally Character Unit
+                if (hitInfo.collider.CompareTag("Player") && GameManager.Instance.isAlly(hitInfo.collider.gameObject))
                 {
                     // If the raycast hits an ally unit, set selectedUnit to the target
                     selectedUnit = hitInfo.collider.gameObject;
@@ -92,8 +92,8 @@ public class Interact : MonoBehaviour
                         UICanvas.SetActive(false);
                     }
                 }
-                // If the raycast hits an enemy and you have more than 0 AP
-                else if (hitInfo.collider.CompareTag("EnemyUnit") && selectedUnit != null && selectedUnit.GetComponent<Character>().actionPoints > 0)
+                // If the raycast hits an Enemy and you have more than 0 AP
+                else if (hitInfo.collider.CompareTag("Player") && selectedUnit != null && selectedUnit.GetComponent<Character>().actionPoints > 0 && !GameManager.Instance.isAlly(hitInfo.collider.gameObject))
                 {
                     // If the raycast hits an enemy within the selected unit's attack range
                     if(Vector3.Distance(hitInfo.collider.transform.position, selectedUnit.transform.position) <= selectedUnit.GetComponent<Character>().attackRange)
