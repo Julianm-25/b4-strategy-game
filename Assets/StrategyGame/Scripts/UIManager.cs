@@ -108,6 +108,7 @@ public class UIManager : MonoSingleton<UIManager>
     public void btnAttack()
     {
         Debug.Log("btnAttack...");
+        GameManager.Instance.nextAction = "Attack";
     }
     
     /// <summary>
@@ -116,6 +117,7 @@ public class UIManager : MonoSingleton<UIManager>
     public void btnMove()
     {
         Debug.Log("btnMove...");
+        GameManager.Instance.nextAction = "Move";
     }
 
     /// <summary>
@@ -124,5 +126,6 @@ public class UIManager : MonoSingleton<UIManager>
     public void btnEndTurn()
     {
         Debug.Log("btnEndTurn...");
+        GameManager.Instance.endTurn();
     }
 }

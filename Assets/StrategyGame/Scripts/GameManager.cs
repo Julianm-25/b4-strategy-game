@@ -15,6 +15,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     //team id starts from 0
     public int activeTeamId;
+    public string nextAction = "Move"; //or "Attack"
     //list of list of charachers, usage: teams[activeTeam][character]
     private List<List<Character>> teams;
     
@@ -41,6 +42,15 @@ public class GameManager : MonoSingleton<GameManager>
         return getApThisTurn(activeTeamId);
     }
 
+    /// <summary>
+    /// end turn and give control to the next team
+    /// </summary>
+    public void endTurn()
+    {
+        // go from 0 to 1 and loop back to 0 using modulus
+        activeTeamId = (activeTeamId + 1) % 2;
+    }
+    
     /// <summary>
     /// restart level and game
     /// </summary>

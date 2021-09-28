@@ -140,7 +140,8 @@ public class Interact : MonoBehaviour
 
     public void UpdateText()
     {
-        teamText.text = selectedUnit.GetComponent<Character>().teamID.ToString();
+        //plus 1 because teamid starts with 0 internally, but 1 is more user friendly
+        teamText.text = (1 + selectedUnit.GetComponent<Character>().teamID).ToString();
         unitText.text = selectedUnit.GetComponent<Character>().GetType().Name;
         hpText.text = selectedUnit.GetComponent<Character>().currentHealth.ToString();
         actionPointText.text = selectedUnit.GetComponent<Character>().actionPoints.ToString();
