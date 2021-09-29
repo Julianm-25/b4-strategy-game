@@ -75,6 +75,23 @@ public class GameManager : MonoSingleton<GameManager>
         activeTeamId = (activeTeamId + 1) % 2;
         UIManager.Instance.setTurnText(activeTeamId + 1);
         UIManager.Instance.toggleCommandMenu(false);
+        resetAPMP();
+
+    }
+
+    /// <summary>
+    /// reset the AP and MP for all characters after end of turn
+    /// </summary>
+    public void resetAPMP()
+    {
+        foreach (var team in teams)
+        {
+            foreach (var character in team)
+            {
+                character.actionPoints = character.maxAP;
+                character.currentMovepoints = character.maxMovepoints;
+            }
+        }
     }
     
     /// <summary>
@@ -82,7 +99,8 @@ public class GameManager : MonoSingleton<GameManager>
     /// </summary>
     public void startNewGame()
     {
-        activeTeamId = 1;
+        activeTeamId = 0;
+        UIManager.Instance.setTurnText(activeTeamId + 1);
     }
 
     // Start is called before the first frame update
@@ -93,7 +111,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void initGame()
     {
-        Debug.Log("init game called();");
+        // Debug.Log("init game called();");
         //create the teams list
         teams = new List<List<Character>>(2);
         //add the two team 0 and 1
@@ -109,7 +127,7 @@ public class GameManager : MonoSingleton<GameManager>
             var character = tile.occupant.GetComponent<Character>(); //try to get the character
             if (character == null) continue; //skip non character objects
             teams[character.teamID].Add(character); //add the character
-            Debug.Log($"tile {tile.name} character {character.name} team {character.teamID} grids {grids.Length}");
+            // Debug.Log($"tile {tile.name} character {character.name} team {character.teamID} grids {grids.Length}");
         }
     }
 
@@ -168,7 +186,7 @@ public class GameManager : MonoSingleton<GameManager>
     /// <returns>true for ally, false for enemy</returns>
     public bool isAlly(GameObject tileOccupant)
     {
-        Debug.Log($"isAlly({tileOccupant.name}), occupant {tileOccupant.GetComponent<Character>().teamID}, active {activeTeamId}");
+        //Debug.Log($"isAlly({tileOccupant.name}), occupant {tileOccupant.GetComponent<Character>().teamID}, active {activeTeamId}");
         return tileOccupant.GetComponent<Character>().teamID == GameManager.Instance.activeTeamId;
     }
 }

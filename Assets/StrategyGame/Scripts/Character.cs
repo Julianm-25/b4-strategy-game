@@ -19,6 +19,11 @@ public abstract class Character : MonoBehaviour
     /// </summary>
     public int actionPoints;
     /// <summary>
+    /// maximum AP to begin with
+    /// </summary>
+    /// <returns></returns>
+    public int maxAP;
+    /// <summary>
     /// how far can a player move
     /// </summary>
     public int maxMovepoints;
@@ -42,6 +47,7 @@ public abstract class Character : MonoBehaviour
     /// which team does this character belong to, to check enemy/friend
     /// </summary>
     public int teamID;
+
     /// <summary>
     /// increase ap of this character by a number
     /// </summary>

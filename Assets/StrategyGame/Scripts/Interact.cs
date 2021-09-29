@@ -64,14 +64,15 @@ public class Interact : MonoBehaviour
                 attackUnit(hitInfo);
             }
             //if command menu is off and clicking on a player, show treat it as a selecting a unit
-            else if (!UICanvas.activeSelf
-                     && hitInfo.collider.CompareTag("Player"))
+            else if (hitInfo.collider.CompareTag("Player"))
             {
                 selectUnit(hitInfo);
             }
             else {
                 Debug.Log(
                     $"object {hitInfo.collider.gameObject}, nextAction {GameManager.Instance.nextAction}, selectedUnit {selectedUnit}");
+                //defaults to select a unit when things fail
+                // selectUnit(hitInfo);
             }
         }
     }
@@ -186,17 +187,29 @@ public class Interact : MonoBehaviour
     public void UpdateText()
     {
         //plus 1 because teamid starts with 0 internally, but 1 is more user friendly
-        var teamID = selectedUnit.GetComponent<Character>().teamID;
+        var character = selectedUnit.GetComponent<Character>();
+        var teamID = character.teamID;
         teamText.text = (1 + teamID).ToString();
-        unitText.text = selectedUnit.GetComponent<Character>().GetType().Name;
-        hpText.text = selectedUnit.GetComponent<Character>().currentHealth.ToString();
-        actionPointText.text = selectedUnit.GetComponent<Character>().actionPoints.ToString();
-        movementPointText.text = selectedUnit.GetComponent<Character>().currentMovepoints.ToString();
+        unitText.text = character.GetType().Name;
+        hpText.text = character.currentHealth.ToString();
+        actionPointText.text = character.actionPoints.ToString();
+        movementPointText.text = character.currentMovepoints.ToString();
 
         //disable the button if not current player's turn
         UIManager.Instance.enableButtons(teamID == GameManager.Instance.activeTeamId);
         
         //check if player has no moves left and must end turn
         GameManager.Instance.checkEndTurn();
+        
+        //reset nextaction if current character's ap is 0
+        if (character.actionPoints < 1)
+        {
+            GameManager.Instance.nextAction = GameManager.NextAction.Select;
+        }
+
+        if (character.currentMovepoints > 0)
+        {
+            GameManager.Instance.nextAction = GameManager.NextAction.Move;
+        }
     }
 }

@@ -19,9 +19,10 @@ namespace StrategyGame.Scripts
         public void Initialise()
         {
             currentHealth = 5;
+            maxAP = 1;
             actionPoints = 1;
             attackRange = 2;
-            attack = 1;
+            attack = 2;
             maxMovepoints = 2;
             currentMovepoints = maxMovepoints;
         }

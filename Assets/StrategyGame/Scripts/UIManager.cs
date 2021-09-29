@@ -17,6 +17,7 @@ public class UIManager : MonoSingleton<UIManager>
     public GameObject mainMenu;
     public GameObject actionButtons;
     public GameObject commandMenu;
+    public GameObject helpMenu;
     public bool isTimer;
     
     public void Start()
@@ -170,4 +171,10 @@ public class UIManager : MonoSingleton<UIManager>
     {
         commandMenu.SetActive(yes);
     }
+
+    public void toggleHelpMenu(bool yes)
+    {
+        helpMenu.SetActive(yes);
+    }
+        
 }
