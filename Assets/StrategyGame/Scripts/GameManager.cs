@@ -76,6 +76,7 @@ public class GameManager : MonoSingleton<GameManager>
         UIManager.Instance.setTurnText(activeTeamId + 1);
         UIManager.Instance.toggleCommandMenu(false);
         resetAPMP();
+        AudioManager.Instance.playEndTurn(true);
 
     }
 
@@ -188,5 +189,36 @@ public class GameManager : MonoSingleton<GameManager>
     {
         //Debug.Log($"isAlly({tileOccupant.name}), occupant {tileOccupant.GetComponent<Character>().teamID}, active {activeTeamId}");
         return tileOccupant.GetComponent<Character>().teamID == GameManager.Instance.activeTeamId;
+    }
+
+    /// <summary>
+    /// check if all in enemy team are dead
+    /// </summary>
+    public void checkGameOver()
+    {
+        var alive = false;
+        // go from 0 to 1 and loop back to 0 using modulus
+        var enemyTeamID = (activeTeamId + 1) % 2;
+        var grids = mapGrid.GetComponentsInChildren<Tile>();
+        //find characters in the map
+        foreach (var tile in grids)
+        {
+            //Debug.Log($"tile {{tile.name}} isoccupied {tile.isOccupied}");
+            if (!tile.isOccupied) continue; //skip if not occupied
+            //Debug.Log($"tile {tile.name} occupant {tile.occupant.name}");
+            var character = tile.occupant.GetComponent<Character>(); //try to get the character
+            if (character == null) continue; //skip non character objects
+            if (character.teamID == enemyTeamID)
+            {
+                alive = true; //at least one enemy char alive
+                break; //exit the loop
+            }
+            // Debug.Log($"tile {tile.name} character {character.name} team {character.teamID} grids {grids.Length}");
+        }
+
+        if (!alive)
+        {
+            UIManager.Instance.showGameOver(activeTeamId); 
+        }
     }
 }

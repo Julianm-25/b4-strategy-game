@@ -13,6 +13,7 @@ public class UIManager : MonoSingleton<UIManager>
     public TMP_Text textTimer;
     public TMP_Text textAction;
     public TMP_Text textInstruction;
+    public TMP_Text textGameover;
     public GameObject gameOverMenu;
     public GameObject mainMenu;
     public GameObject actionButtons;
@@ -25,7 +26,7 @@ public class UIManager : MonoSingleton<UIManager>
         score = 0;
         timer = 60;
         addScore();
-        showGameOver(false);
+        showGameOver(0, false);
         showMainMenu(false);
         isTimer = false;
         AudioManager.Instance.playMusic(true);
@@ -39,29 +40,6 @@ public class UIManager : MonoSingleton<UIManager>
         textScore.text = score.ToString();
     }
 
-    public void startTimer()
-    {
-        if (isTimer)
-        {
-            if (timer >= 0)
-            {
-                timer -= Time.deltaTime;
-            }
-            else
-            {
-                timer = 0;
-                isTimer = false;
-                showGameOver();
-            }
-            textTimer.text = Mathf.FloorToInt(timer).ToString();
-        }
-    }
-
-    public void FixedUpdate()
-    {
-        //startTimer();
-    }
-
     /// <summary>
     /// catches keypresses related for the UI, usually the main menu
     /// </summary>
@@ -70,8 +48,9 @@ public class UIManager : MonoSingleton<UIManager>
         if (Input.GetKeyDown(KeyCode.Escape)) toggleMainMenu();
     }
 
-    public void showGameOver(bool show=true)
+    public void showGameOver(int winner, bool show=true)
     {
+        textGameover.text = $"Team {winner + 1}\nwinds";
         gameOverMenu.SetActive(show);
         isTimer = !show;
         if (show)

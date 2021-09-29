@@ -95,6 +95,7 @@ public class Interact : MonoBehaviour
             }
 
             selectedUnit.GetComponent<Character>().actionPoints -= 1;
+            AudioManager.Instance.PlayAttackFx(true);
             UpdateText();
         }
     }
@@ -135,6 +136,7 @@ public class Interact : MonoBehaviour
 
             // Reduces movement points by 1
             unitStats.currentMovepoints -= 1;
+            AudioManager.Instance.PlayMoveFx(true);
             // Updates the UI Text
             UpdateText();
         }
@@ -154,6 +156,7 @@ public class Interact : MonoBehaviour
         selectedUnit = hitInfo.collider.gameObject;
         UICanvas.SetActive(true);
         UpdateText();
+        AudioManager.Instance.playSelectFx(true);
     }
 
     // Allows the player to spend more AP to move
@@ -211,5 +214,8 @@ public class Interact : MonoBehaviour
         {
             GameManager.Instance.nextAction = GameManager.NextAction.Move;
         }
+        
+        //check for gameover condition
+        GameManager.Instance.checkGameOver();
     }
 }

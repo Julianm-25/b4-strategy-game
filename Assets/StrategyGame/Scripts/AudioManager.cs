@@ -8,8 +8,10 @@ using UnityEngine;
 public class AudioManager : MonoSingleton<AudioManager>
 {
     [SerializeField] private AudioSource bgm;
-    [SerializeField] private AudioSource matchFX;
+    [SerializeField] private AudioSource attackFX;
+    [SerializeField] private AudioSource moveFX;
     [SerializeField] private AudioSource selectFX;
+    [SerializeField] private AudioSource endturnFX;
     [SerializeField] private AudioSource gameOverFX;
     
     public void playMusic(bool isPlay)
@@ -36,15 +38,27 @@ public class AudioManager : MonoSingleton<AudioManager>
         }
     }
     
-    public void playMatchFx(bool isPlay)
+    public void PlayAttackFx(bool isPlay)
     {
         if (isPlay)
         {
-            matchFX.Play();
+            attackFX.Play();
         }
         else
         {
-            matchFX.Stop();
+            attackFX.Stop();
+        }
+    }
+    
+    public void PlayMoveFx(bool isPlay)
+    {
+        if (isPlay)
+        {
+            moveFX.Play();
+        }
+        else
+        {
+            moveFX.Stop();
         }
     }
     
@@ -60,4 +74,15 @@ public class AudioManager : MonoSingleton<AudioManager>
         }
     }
     
+    public void playEndTurn(bool isPlay)
+    {
+        if (isPlay)
+        {
+            endturnFX.Play();
+        }
+        else
+        {
+            endturnFX.Stop();
+        }
+    }
 }
