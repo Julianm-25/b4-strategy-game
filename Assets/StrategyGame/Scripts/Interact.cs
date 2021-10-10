@@ -36,7 +36,7 @@ public class Interact : MonoBehaviour
             // rider sugestion: invert 'if' to reduce nesting
             if (!Physics.Raycast(clickCheck, out hitInfo)) return;
 
-            Debug.Log(hitInfo.collider.tag);
+            Debug.Log($"clicked {hitInfo.collider.tag}");
             // If clicked on any Character Unit
             if ((GameManager.Instance.nextAction == GameManager.NextAction.Select
                  || selectedUnit == null)

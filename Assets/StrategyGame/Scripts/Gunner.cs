@@ -8,7 +8,7 @@ namespace StrategyGame.Scripts
     /// </summary>
     public class Gunner : Character
     {
-        private void Start()
+        private void Awake()
         {
             Initialise();
         }

@@ -41,9 +41,9 @@ public class GameManager : MonoSingleton<GameManager>
         foreach (var unit in teams[teamID])
         {
             moves += unit.actionPoints;
-            Debug.Log($"getapthis turn team {teamID}, unit team {unit.teamID} unit {unit.name} ap {unit.actionPoints}");
+            //Debug.Log($"getapthis turn team {teamID}, unit team {unit.teamID} unit {unit.name} ap {unit.actionPoints}");
         }
-
+        //Debug.Log($"team {teamID} moves {moves}");
         return moves;
     }
     /// <summary>
@@ -128,7 +128,7 @@ public class GameManager : MonoSingleton<GameManager>
             var character = tile.occupant.GetComponent<Character>(); //try to get the character
             if (character == null) continue; //skip non character objects
             teams[character.teamID].Add(character); //add the character
-            // Debug.Log($"tile {tile.name} character {character.name} team {character.teamID} grids {grids.Length}");
+            //Debug.Log($"tile {tile.name} character {character.name} team {character.teamID} AP {character.actionPoints} grids {grids.Length}");
         }
     }
 

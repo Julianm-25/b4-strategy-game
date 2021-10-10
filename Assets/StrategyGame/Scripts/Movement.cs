@@ -28,6 +28,8 @@ public class Movement : MonoBehaviour
         // For each adjacent tile
         foreach (var adjTile in adjTiles)
         {
+            //skip tiles with no tiles script
+            if (!adjTile.GetComponent<Tile>()) continue;
             // If the tile is unoccupied
             if (!adjTile.GetComponent<Tile>().isOccupied)
             {
@@ -45,6 +47,9 @@ public class Movement : MonoBehaviour
             {
                 // If the tile is occupied by an enemy
                 var tile = tileCollider.GetComponent<Tile>();
+                //skip tiles with no tiles script
+                if (!tile) continue;
+                
                 if (tile.isOccupied && !GameManager.Instance.isAlly(tile.occupant))
                 {
                     // Activate the associated red tile
