@@ -41,7 +41,7 @@ public class GameManager : MonoSingleton<GameManager>
         foreach (var unit in teams[teamID])
         {
             moves += unit.actionPoints;
-            //Debug.Log($"getapthis turn team {teamID}, unit team {unit.teamID} unit {unit.name} ap {unit.actionPoints}");
+            //  Debug.Log($"getapthis turn team {teamID}, unit team {unit.teamID} unit {unit.name} ap {unit.actionPoints}");
         }
         //Debug.Log($"team {teamID} moves {moves}");
         return moves;
